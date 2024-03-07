@@ -17,19 +17,19 @@ class Plugin(BasePlugin):
         self._filter_pushdown = config.get("filter_pushdown", False)
 
     def configure_connection(self, conn: DuckDBPyConnection):
-        conn.install_extension("postgres")
-        conn.load_extension("postgres")
+        conn.install_extension("postgres_scanner")
+        conn.load_extension("postgres_scanner")
 
-        if self._sink_schema:
-            conn.execute(f"CREATE SCHEMA IF NOT EXISTS {self._sink_schema}")
+        # if self._sink_schema:
+        #     conn.execute(f"CREATE SCHEMA IF NOT EXISTS {self._sink_schema}")
 
-        attach_args = [
-            ("source_schema", f"'{self._source_schema}'"),
-            ("sink_schema", f"'{self._sink_schema}'"),
-            ("overwrite", str(self._overwrite).lower()),
-            ("filter_pushdown", str(self._filter_pushdown).lower()),
-        ]
-        attach_stmt = (
-            f"CALL postgres_attach('{self._dsn}', {', '.join(f'{k}={v}' for k, v in attach_args)})"
-        )
-        conn.execute(attach_stmt)
+        # attach_args = [
+        #     ("source_schema", f"'{self._source_schema}'"),
+        #     ("sink_schema", f"'{self._sink_schema}'"),
+        #     ("overwrite", str(self._overwrite).lower()),
+        #     ("filter_pushdown", str(self._filter_pushdown).lower()),
+        # ]
+        # attach_stmt = (
+        #     f"CALL postgres_attach('{self._dsn}', {', '.join(f'{k}={v}' for k, v in attach_args)})"
+        # )
+        # conn.execute(attach_stmt)
